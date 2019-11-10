@@ -123,6 +123,7 @@ var getToken = function getToken() {
         setup(result.csrfToken);
     });
 };
+// var socket = io();
 
 $(document).ready(function () {
     getToken();

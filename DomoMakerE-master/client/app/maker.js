@@ -15,15 +15,7 @@ const handleDomo = (e) => {
     return false;
 };
 
-// (function() {
-//     var  socket  =  io();
-//     $("form").submit(function(e) {
-//         e.preventDefault(); // prevents page reloading
-//         socket.emit("chat message", $("#m").val());
-//         $("#m").val("");
-//     return  true;
-// });
-// })();
+
 
 const DomoForm = (props) => {
     return (
@@ -99,6 +91,7 @@ const getToken = () => {
         setup(result.csrfToken);
     });
 };
+// var socket = io();
 
 $(document).ready(function() {
     getToken();

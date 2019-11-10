@@ -10,34 +10,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.6.2/remarkable.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <link rel="shortcut icon" href="/assets/img/favicon.png"/>
-  <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
+  <link rel="stylesheet" type="text/css" href="/assets/gameStyle.css"/>
 </head>
 <body> 
   <nav><a href="/login"><img id="logo" src="/assets/img/face.png" alt="face logo"/></a>
     <div class="navlink"><a id="loginButton" href="/login">Login</a></div>
     <div class="navlink"><a id="signupButton" href="/signup">Sign up</a></div>
   </nav>
-
-    <div class="chat_window">
-        <div class="top_menu">
-        <div class="buttons">
-        <div class="button close"></div>
-        <div class="button minimize"></div>
-        <div class="button maximize"></div>
-    </div>
-        <div class="title">Chat</div>
-    </div>
-        <ul id="messages" class="messages"></ul>
-    <div class="bottom_wrapper clearfix">
-    <i id="typing"></i>
-    <form id="form">
-        <div class="message_input_wrapper">
-        <input id="message"  class="message_input"  placeholder="Type your message here..."  />
-        </div>
-        <button class="send_message">Send</button>
-    </form>
-    </div>
-    </div>
+    <ul id="messages"></ul>
+    {{!-- <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form> --}}
+    {{!-- <section id="messages"></section> --}}
+    <section id="sender"></section>
   <div id="domoMessage"><img id="speech" src="/assets/img/speech.png" alt="speech box"/>
     <h3><span id="errorMessage">Wrong username or password</span></h3><img id="domo" src="assets/img/hand.png" alt="domo"/>
   </div>
