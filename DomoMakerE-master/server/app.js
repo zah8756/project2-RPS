@@ -11,6 +11,10 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const url = require('url');
 const csrf = require('csurf');
+const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
@@ -21,6 +25,9 @@ mongoose.connect(dbURL, (err) => {
     console.log('Could not connect to database');
     throw err;
   }
+});
+io.on('connection', () => {
+  console.log('a user is connected');
 });
 
 let redisURL = {
@@ -38,7 +45,6 @@ if (process.env.REDISCLOUD_URL) {
 // pull in our routes
 const router = require('./router.js');
 
-const app = express();
 app.use('/assets', express.static(path.resolve(`${__dirname}/../hosted/`)));
 app.use(favicon(`${__dirname}/../hosted/img/favicon.png`));
 app.use(compression());
@@ -76,9 +82,48 @@ app.use((err, req, res, next) => {
 
 router(app);
 
-app.listen(port, (err) => {
+// socket.on('chat message', (msg) => {
+//   console.log(`message: ${msg}`);
+
+//   // broadcast message to everyone in port:5000 except yourself.
+//   socket.broadcast.emit('received', { message: msg });
+
+//   // save chat to the database
+//   // connect.then(db => {
+//   //   console.log('connected correctly to the server');
+//   //   const chatMessage = new Chat({ message: msg, sender: 'Anonymous' });
+
+//   //   chatMessage.save();
+//   // });
+// });
+app.post('/messages', async (req, res) => {
+  try{
+    var message = new Message(req.body);
+
+    var savedMessage = await message.save()
+      console.log('saved');
+
+    var censored = await Message.findOne({message:'badword'});
+      if(censored)
+        await Message.remove({_id: censored.id})
+      else
+        io.emit('message', req.body);
+      res.sendStatus(200);
+  }
+  catch (error){
+    res.sendStatus(500);
+    return console.log('error',error);
+  }
+  finally{
+    console.log('Message Posted')
+  }
+
+})
+
+http.listen(port, (err) => {
   if (err) {
     throw err;
   }
   console.log(`Listening on port ${port}`);
 });
+
