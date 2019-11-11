@@ -12,6 +12,7 @@ const RedisStore = require('connect-redis')(session);
 const url = require('url');
 const csrf = require('csurf');
 const app = express();
+// eslint-disable-next-line new-cap
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
@@ -60,6 +61,7 @@ const router = require('./router.js');
 app.use('/assets', express.static(path.resolve(`${__dirname}/../hosted/`)));
 app.use(favicon(`${__dirname}/../hosted/img/favicon.png`));
 app.use(compression());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
@@ -116,3 +118,5 @@ http.listen(port, (err) => {
   console.log(`Listening on port ${port}`);
 });
 
+
+module.exports.io = io;
